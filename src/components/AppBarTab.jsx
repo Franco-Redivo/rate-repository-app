@@ -1,11 +1,13 @@
 import { Pressable, StyleSheet } from "react-native";
 import Text from "./Text";
-import theme from "../theme";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    backgroundColor: theme.colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+    alignSelf: 'flex-start',
   },
   text:{
     color: 'white',
