@@ -6,7 +6,6 @@ const useRepositories = () => {
         fetchPolicy: 'cache-and-network',
     });
 
-    console.log('useRepositories - Full result:', { data, error, loading });
     if (error) {
         console.log('useRepositories GraphQL Errors:', error.graphQLErrors);
         console.log('useRepositories Network Error:', error.networkError);
