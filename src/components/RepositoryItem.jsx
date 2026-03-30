@@ -62,7 +62,7 @@ const RepositoryItem = ({item}) => {
         return (count / 1000000).toFixed(1) + 'M';
     };
     return (
-        <View style={styles.mainContainer}>
+        <View testID="repositoryItem" style={styles.mainContainer}>
             <View style={styles.mainInfoContainer}>
                 <Image
                     style={styles.avatar}
