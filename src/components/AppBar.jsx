@@ -33,11 +33,14 @@ const AppBar = () => {
         <ScrollView style={styles.scrollView} horizontal showsHorizontalScrollIndicator={false}>
             <AppBarTab text="Repositories" onPress={() => navigate('/')} />
               {data?.me?.username ? (
-                <AppBarTab text="Sign Out" onPress={async () => {
-                  await authStorage.removeAccessToken();
-                  await apolloClient.resetStore();
-                  navigate('/signin');
-                }} />
+                <>
+                  <AppBarTab text="Create a Review" onPress={() => navigate('/review')} />
+                  <AppBarTab text="Sign Out" onPress={async () => {
+                    await authStorage.removeAccessToken();
+                    await apolloClient.resetStore();
+                    navigate('/signin');
+                  }} />
+                </>
               ) : (
                 <AppBarTab text="Sign In" onPress={() => navigate('/signin')} />
               )}

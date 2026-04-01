@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
 const RepositoryView = () => {
 
     const {repositoryId} = useParams()
-    console.log('RepositoryView repositoryId:', repositoryId);
     const {repository, error, loading} = useRepository({repositoryId});
     const {reviews} = useRepositoryReviews({repositoryId, first: 5});
     const reviewsNodes = reviews?.edges?.map(edge => edge.node) ?? [];
