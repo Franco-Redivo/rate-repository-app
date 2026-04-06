@@ -42,7 +42,10 @@ const AppBar = () => {
                   }} />
                 </>
               ) : (
-                <AppBarTab text="Sign In" onPress={() => navigate('/signin')} />
+                <>
+                  <AppBarTab text="Sign Up" onPress={() => navigate('/signup')} />
+                  <AppBarTab text="Sign In" onPress={() => navigate('/signin')} />
+                </>
               )}
         </ScrollView>
     </View>
