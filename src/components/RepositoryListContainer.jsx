@@ -2,6 +2,7 @@ import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import Text from './Text';
 import { useNavigate } from 'react-router-native';
+import { Picker } from '@react-native-picker/picker';
 
 
 const styles = StyleSheet.create({
@@ -24,12 +25,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+  pickerContainer: {
+    backgroundColor: '#e1e4e8',
+    height: 130,
+    justifyContent: 'center',
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 
-const RepositoryListContainer = ({repositories, loading, error}) => {
+const RepositoryListContainer = ({repositories,orderBy, orderDirection, setOrderBy, setOrderDirection, loading, error}) => {
     const repositoryNodes = repositories?.edges?.map(edge => edge.node) ?? [];
     const navigate = useNavigate();
 
@@ -70,6 +78,20 @@ const RepositoryListContainer = ({repositories, loading, error}) => {
               </Pressable>
             )}
             keyExtractor={item => item.id}
+            ListHeaderComponent={() => <Picker
+              style={styles.pickerContainer}
+              selectedValue={`${orderBy}-${orderDirection}`}
+              onValueChange={(value) => {
+                const [newOrderBy, newOrderDirection] = value.split('-');
+                setOrderBy(newOrderBy);
+                setOrderDirection(newOrderDirection);
+              }}
+            >
+              <Picker.Item label="Latest repositories" value="CREATED_AT-DESC" />
+              <Picker.Item label="Oldest repositories" value="CREATED_AT-ASC" />
+              <Picker.Item label="Highest rated repositories" value="RATING_AVERAGE-DESC" />
+              <Picker.Item label="Lowest rated repositories" value="RATING_AVERAGE-ASC" />
+            </Picker>}
             />
         </View>
     </View>
