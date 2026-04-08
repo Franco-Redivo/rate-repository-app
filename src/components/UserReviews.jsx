@@ -1,6 +1,7 @@
 import ReviewItem from "./ReviewItem";
 import { GET_USER } from "../graphql/queries";
-import { useQuery } from "@apollo/client";
+import { DELETE_REVIEW } from "../graphql/mutations";
+import { useQuery, useMutation } from "@apollo/client";
 import { FlatList, View, StyleSheet,Pressable, Alert } from "react-native";
 import { useNavigate } from "react-router-native";
 import Text from "./Text";
@@ -45,6 +46,10 @@ const UserReviews = () => {
         variables: { includeReviews: true },
     });
 
+    const [deleteReview] = useMutation(DELETE_REVIEW, {
+        refetchQueries: [{ query: GET_USER, variables: { includeReviews: true } }],
+    });
+
     const navigate = useNavigate();
 
     if (error) {
@@ -71,7 +76,7 @@ const UserReviews = () => {
                                 'Are you sure you want to delete this review?',
                                 [
                                     { text: 'Cancel', style: 'cancel' },
-                                    { text: 'OK', onPress: () => console.log('Delete review with id:', item.node.id) },
+                                    { text: 'OK', onPress: () => deleteReview({ variables: { deleteReviewId: item.node.id } }) },
                                 ],
                                 { cancelable: true }
                             )}>
