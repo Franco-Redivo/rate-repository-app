@@ -35,6 +35,7 @@ const AppBar = () => {
               {data?.me?.username ? (
                 <>
                   <AppBarTab text="Create a Review" onPress={() => navigate('/review')} />
+                  <AppBarTab text="My Reviews" onPress={() => navigate('/user-reviews')} />
                   <AppBarTab text="Sign Out" onPress={async () => {
                     await authStorage.removeAccessToken();
                     await apolloClient.resetStore();
