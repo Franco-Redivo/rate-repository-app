@@ -10,10 +10,14 @@ const RepositoryList = () => {
   const [orderDirection, setOrderDirection] = useState('DESC');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
-  const { repositories, loading, error } = useRepositories({ orderBy, orderDirection, searchKeyword: debouncedSearchKeyword });
+  const { repositories,fetchMore, loading, error } = useRepositories({ first:3, orderBy, orderDirection, searchKeyword: debouncedSearchKeyword });
   const navigate = useNavigate();
 
-  return <RepositoryListContainer repositories={repositories} orderBy={orderBy} orderDirection={orderDirection} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} navigate={navigate} loading={loading} error={error} />;
+  const onEndReach = () => {
+    fetchMore();
+  };
+
+  return <RepositoryListContainer repositories={repositories} onEndReach={onEndReach} orderBy={orderBy} orderDirection={orderDirection} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} navigate={navigate} loading={loading} error={error} />;
 
 };
 

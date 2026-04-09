@@ -22,8 +22,14 @@ const RepositoryView = () => {
 
     const {repositoryId} = useParams()
     const {repository, error, loading} = useRepository({repositoryId});
-    const {reviews} = useRepositoryReviews({repositoryId, first: 5});
+    const {reviews, fetchMore} = useRepositoryReviews({repositoryId, first: 2});
     const reviewsNodes = reviews?.edges?.map(edge => edge.node) ?? [];
+
+    const onEndReach = () => {
+        if(reviews?.pageInfo?.hasNextPage) {
+            fetchMore();
+        }
+    };
 
     if (loading) {
         return (
@@ -58,6 +64,8 @@ const RepositoryView = () => {
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={() => <RepositoryItem item={repository} />}
                 ItemSeparatorComponent={item => <View style={{height: 10}} />}
+                onEndReached={onEndReach}
+                onEndReachedThreshold={0.5}
             />
         </View>
     );

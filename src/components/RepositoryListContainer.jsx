@@ -162,7 +162,7 @@ export class RepositoryListContainer extends React.Component {
   
 
   render() {
-    const { repositories, navigate, loading, error } = this.props;
+    const { repositories, onEndReach, navigate, loading, error } = this.props;
     const repositoryNodes = repositories?.edges?.map(edge => edge.node) ?? [];
 
     if (loading && repositoryNodes.length === 0) {
@@ -203,6 +203,8 @@ export class RepositoryListContainer extends React.Component {
               )}
               keyExtractor={item => item.id}
               ListHeaderComponent={this.renderHeader}
+              onEndReached={onEndReach}
+              onEndReachedThreshold={0.5}
               />
           </View>
       </View>

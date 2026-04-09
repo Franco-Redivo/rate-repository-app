@@ -1,15 +1,33 @@
 import { useQuery } from "@apollo/client";
 import { GET_REPOSITORIES } from "../graphql/queries";
 
-const useRepositories = ({ orderBy, orderDirection, searchKeyword }) => {
-    const { data, error, loading, refetch } = useQuery(GET_REPOSITORIES, {
+const useRepositories = ({ first, orderBy, orderDirection, searchKeyword }) => {
+    const queryVariables = {
+        first: first || 2,
+        orderBy: orderBy || 'CREATED_AT',
+        orderDirection: orderDirection || 'DESC',
+        searchKeyword: searchKeyword || '',
+    };
+
+    const { data, error, fetchMore, loading, refetch } = useQuery(GET_REPOSITORIES, {
         fetchPolicy: 'cache-and-network',
-        variables: {
-            orderBy: orderBy || 'CREATED_AT',
-            orderDirection: orderDirection || 'DESC',
-            searchKeyword: searchKeyword || '',
-        },
+        variables: queryVariables,
     });
+
+    const handleFetchMore = () => {
+        const canFetchMore = !loading && data?.repositories?.pageInfo?.hasNextPage;
+
+        if (!canFetchMore) {
+            return 
+        };
+
+        fetchMore({
+            variables: {
+                after: data.repositories.pageInfo.endCursor,
+                ...queryVariables,
+            },
+        });
+    }
 
     if (error) {
         console.log('useRepositories GraphQL Errors:', error.graphQLErrors);
@@ -19,6 +37,7 @@ const useRepositories = ({ orderBy, orderDirection, searchKeyword }) => {
 
     return {
         repositories: data?.repositories,
+        fetchMore: handleFetchMore,
         loading,
         error,
         refetch,

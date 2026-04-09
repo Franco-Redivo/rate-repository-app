@@ -4,12 +4,19 @@ import { REPOSITORY_INFO } from "./fragments";
 
 
 export const GET_REPOSITORIES = gql `
-    query Repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection, $searchKeyword: String) {
-        repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+    query Repositories($first: Int,$after: String, $orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection, $searchKeyword: String) {
+        repositories(first: $first, after: $after, orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+            totalCount
             edges {
                 node {
                     ...RepositoryInfo
                 }
+                cursor
+            }
+            pageInfo {
+                endCursor
+                startCursor
+                hasNextPage
             }
         }
     }
@@ -50,20 +57,28 @@ export const GET_REPOSITORY = gql `
 `
 
 export const GET_REPOSITORY_REVIEWS = gql `
-    query Repository($repositoryId: ID!) {
+    query Repository($repositoryId: ID!, $first: Int, $after: String) {
         repository(id: $repositoryId) {
-            reviews {
+            reviews(first: $first, after: $after) {
+                totalCount
                 edges {
                     node {
                         createdAt
                         id
                         rating
                         text
+                        repositoryId
                         user {
                             id
                             username
                         }
                     }
+                    cursor
+                }
+                pageInfo {
+                    endCursor
+                    startCursor
+                    hasNextPage
                 }
             }
         }
